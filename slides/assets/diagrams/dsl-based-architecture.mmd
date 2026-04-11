@@ -1,0 +1,61 @@
+%%{init: {'theme': 'base', 'themeVariables': { 'primaryColor': '#003366', 'primaryTextColor': '#fff', 'primaryBorderColor': '#003366', 'lineColor': '#003366', 'secondaryColor': '#0066cc', 'tertiaryColor': '#fff'}}}%%
+flowchart TB
+    subgraph Config["📋 YAML Config"]
+        Y1[sequence.yml]
+        Y2[Steps + Plugins]
+    end
+    
+    subgraph Engine["⚙️ Engine (Deterministic)"]
+        E1[YAML Loader]
+        E2[Sequence Executor]
+        E3[HTTP Client]
+        E4[Plugin Runner]
+    end
+    
+    subgraph Plugins["🧩 Plugins (AI Generated)"]
+        P1[legacyExtractPlugin]
+        P2[actualExtractPlugin]
+        P3[comparisonPlugin]
+    end
+    
+    subgraph AI["🤖 AI (Dev time)"]
+        A1[Analyse APIs]
+        A2[Generate Plugins]
+        A3[Validate Code]
+    end
+    
+    subgraph Output["📊 Output"]
+        O1[Test Results]
+        O2[Comparison Report]
+    end
+    
+    Y1 --> E1
+    E1 --> E2
+    E2 --> E3
+    E2 --> E4
+    E4 --> P1
+    E4 --> P2
+    E4 --> P3
+    P1 --> E4
+    P2 --> E4
+    P3 --> E4
+    E4 --> O1
+    E4 --> O2
+    
+    A1 --> A2
+    A2 --> P1
+    A2 --> P2
+    A2 --> P3
+    A3 --> P1
+    A3 --> P2
+    A3 --> P3
+    
+    style Config fill:#e3f2fd
+    style Engine fill:#e8f5e9
+    style Plugins fill:#fff8e1
+    style AI fill:#fce4ec
+    style Output fill:#f3e5f5
+    
+    %% Annotations
+    E4 -.- T1["⏱️ 1-2 sec"]
+    E4 -.- T2["💰 ~$0.001"]

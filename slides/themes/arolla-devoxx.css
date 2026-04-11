@@ -1,0 +1,455 @@
+/* @theme arolla-devoxx */
+
+@import "default";
+
+:root {
+  /* Palette Arolla */
+  --arolla-yellow: #ffd200;
+  --arolla-yellow-dark: #e6b800;
+  --arolla-yellow-pale: #fff9e6;
+  --arolla-dark: #1a1a1a;
+  --arolla-gray: #666666;
+
+  /* Base */
+  --text-color: #1a1a1a;
+  --text-light: #666666;
+  --bg-white: #ffffff;
+  --bg-code: #2d2d2d;
+  --bg-table: #fafafa;
+}
+
+/* Base slide */
+section {
+  font-family: "Segoe UI", "Roboto", "Helvetica Neue", Arial, sans-serif;
+  font-size: 1.5em;
+  color: var(--text-color);
+  padding: 50px 70px 80px 70px;
+  background-color: var(--bg-white);
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: flex-start !important;
+  align-items: stretch !important;
+}
+
+/* Pagination - centered at bottom (Marp uses section::after) */
+section::after {
+  bottom: 20px !important;
+  left: 0 !important;
+  right: 0 !important;
+  width: 100% !important;
+  text-align: center !important;
+  font-size: 0.6em !important;
+  color: #999 !important;
+}
+
+/* Logo Arolla in bottom left - using img for PDF compatibility */
+/* Note: Pseudo-elements with background-image don't work in PDF */
+
+/* Logo Devoxx - removed background-image approach for PDF compatibility */
+.logo-devoxx {
+  display: none; /* Hidden in PDF - use inline images instead */
+}
+
+/* Footer styling for logos - Arolla left, Devoxx right */
+footer {
+  position: absolute;
+  bottom: 20px;
+  left: 70px;
+  right: 70px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 30px;
+  border-top: none;
+  text-align: left;
+}
+
+footer img {
+  height: 20px;
+  object-fit: contain;
+  vertical-align: middle;
+}
+
+/* First image (Arolla) - left */
+footer img:first-of-type {
+  margin-right: 0;
+}
+
+/* Second image (Devoxx) - right */
+footer img:last-of-type {
+  margin-left: auto;
+}
+
+/* Footer for logos - use a different approach */
+.slide-footer {
+  position: absolute;
+  bottom: 20px;
+  left: 70px;
+  right: 70px;
+  height: 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  pointer-events: none;
+}
+
+.slide-footer-left {
+  height: 30px;
+  width: 90px;
+  background-image: url("../assets/logos/arolla-logo.webp");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: left center;
+  opacity: 0.9;
+}
+
+.slide-footer-right {
+  height: 30px;
+  width: 120px;
+  background-image: url("../assets/logos/devoxx-logo.svg");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: right center;
+  opacity: 0.9;
+}
+
+/* Title slide */
+section.title {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 80px 100px;
+}
+
+section.title h1 {
+  font-size: 2.8em;
+  font-weight: 700;
+  color: var(--arolla-dark);
+  margin-bottom: 0.3em;
+  border: none;
+  padding: 0;
+}
+
+section.title h1::after {
+  content: "";
+  display: block;
+  width: 120px;
+  height: 5px;
+  background-color: var(--arolla-yellow);
+  margin: 0.4em auto 0;
+}
+
+section.title h2 {
+  font-size: 1.4em;
+  font-weight: 400;
+  color: var(--text-light);
+  margin: 0;
+  border: none;
+  padding: 0;
+  text-transform: none;
+}
+
+/* Logos container for title slide */
+.logos {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 80px;
+  margin-top: 60px;
+}
+
+.logos img {
+  height: 50px;
+  opacity: 0.9;
+  object-fit: contain;
+}
+
+.logos img:first-child {
+  height: 50px;
+}
+
+.logos img:last-child {
+  height: 200px;
+}
+
+/* Headers */
+h1 {
+  font-size: 1.6em;
+  font-weight: 700;
+  color: var(--arolla-dark);
+  margin-bottom: 0.6em;
+  padding-left: 20px;
+  border-left: 5px solid var(--arolla-yellow);
+  border-bottom: none;
+  text-transform: none;
+}
+
+h2 {
+  font-size: 1.3em;
+  font-weight: 600;
+  color: var(--arolla-dark);
+  margin-bottom: 1.2em;
+  padding-left: 15px;
+  border-left: 4px solid var(--arolla-yellow);
+  border-bottom: none;
+  text-transform: none;
+  flex-shrink: 0;
+}
+
+h3 {
+  font-size: 1.1em;
+  font-weight: 600;
+  color: var(--text-color);
+  margin-bottom: 0.4em;
+}
+
+/* Lists */
+ul,
+ol {
+  margin: 0.2em 0;
+  padding-left: 1.5em;
+}
+
+li {
+  margin: 0.3em 0;
+  line-height: 1.5;
+}
+
+ul li::marker {
+  color: var(--arolla-yellow);
+  font-size: 1.1em;
+}
+
+ol li::marker {
+  color: var(--arolla-dark);
+  font-weight: 600;
+}
+
+/* Code inline */
+code {
+  font-family: "JetBrains Mono", "Fira Code", "Consolas", monospace;
+  background-color: var(--arolla-yellow-pale);
+  color: var(--arolla-dark);
+  padding: 0.15em 0.4em;
+  border-radius: 4px;
+  font-size: 0.75em;
+}
+
+/* Code blocks */
+pre {
+  margin: 1em 0;
+  padding: 1em 1.2em;
+  background-color: #f8f8f8;
+  border-radius: 8px;
+  border-left: 4px solid var(--arolla-yellow);
+  overflow-x: auto;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+pre code {
+  background-color: transparent;
+  color: var(--arolla-dark);
+  padding: 0;
+  font-size: 0.72em;
+  line-height: 1.6;
+}
+
+/* Tables */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1em 0;
+  font-size: 0.75em;
+  background-color: #ffffff;
+}
+
+th {
+  background-color: var(--arolla-yellow-pale);
+  color: var(--arolla-dark);
+  font-weight: 600;
+  padding: 12px 15px;
+  text-align: left;
+  border-bottom: 2px solid var(--arolla-yellow);
+}
+
+td {
+  padding: 10px 15px;
+  border-bottom: 1px solid #eee;
+}
+
+tr:nth-child(even) {
+  background-color: #fafafa;
+}
+
+tr:hover {
+  background-color: var(--arolla-yellow-pale);
+}
+
+/* Blockquotes */
+blockquote {
+  margin: 1em 0;
+  padding: 0.8em 1.5em;
+  background-color: var(--arolla-yellow-pale);
+  border-left: 4px solid var(--arolla-yellow);
+  border-radius: 0 4px 4px 0;
+  color: var(--arolla-dark);
+  font-style: italic;
+}
+
+blockquote p {
+  margin: 0;
+}
+
+/* Highlight */
+.highlight {
+  background-color: var(--arolla-yellow);
+  padding: 0.1em 0.3em;
+  border-radius: 3px;
+  font-weight: 600;
+}
+
+/* Author citation in blockquotes */
+.author {
+  display: block;
+  font-size: 0.7em;
+  font-style: normal;
+  font-weight: 400;
+  color: var(--text-light);
+  margin-top: 0.5em;
+  text-align: right;
+}
+
+/* Utility classes */
+.arolla {
+  color: var(--arolla-yellow);
+  font-weight: 700;
+}
+
+.dark {
+  color: var(--arolla-dark);
+  font-weight: 700;
+}
+
+/* Strong emphasis */
+strong {
+  font-weight: 700;
+  color: var(--arolla-dark);
+}
+
+/* Links */
+a {
+  color: var(--arolla-dark);
+  text-decoration: underline;
+  text-decoration-color: var(--arolla-yellow);
+  text-underline-offset: 2px;
+}
+
+a:hover {
+  color: var(--arolla-yellow-dark);
+}
+
+/* Diagrams - fit within slide bounds and zoom on hover */
+img[alt="center"] {
+  max-width: 90%;
+  max-height: 400px;
+  object-fit: contain;
+  margin: 0 auto;
+  display: block;
+  transition: transform 0.2s ease;
+  cursor: zoom-in;
+}
+
+img[alt="center"]:hover {
+  transform: scale(1.1);
+}
+
+/* Make diagrams clickable for full-size view */
+a > img[alt="center"] {
+  cursor: zoom-in;
+}
+
+.mermaid {
+  display: flex;
+  justify-content: center;
+  margin: 1em 0;
+}
+
+/* Hide title slide logos since we use custom .logos container */
+section.title::before {
+  display: none;
+}
+
+section.title {
+  background-image: none;
+}
+
+/* Small code class for slides with long code blocks */
+.small-code pre code {
+  font-size: 0.5em;
+}
+
+/* Two-column layout */
+.columns {
+  display: flex;
+  gap: 2rem;
+  align-items: flex-start;
+}
+
+.columns > div {
+  flex: 1;
+}
+
+/* Transition slides with background images */
+section.transition {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  text-align: left;
+  padding: 60px 80px;
+  position: relative;
+}
+
+section.transition h2 {
+  font-size: 1.3em;
+  font-weight: 600;
+  color: var(--arolla-dark);
+  border-left: 4px solid var(--arolla-yellow);
+  padding-left: 15px;
+  margin-bottom: 0.5em;
+  text-shadow: 0 0 20px rgba(255, 255, 255, 0.8);
+}
+
+section.transition p {
+  font-size: 1.2em;
+  color: var(--arolla-dark);
+  background-color: rgba(255, 255, 255, 0.85);
+  padding: 0.5em 1em;
+  border-radius: 8px;
+  display: inline-block;
+  margin-top: 1em;
+}
+
+/* Footer on transition slides - constrained to left half */
+section.transition footer {
+  left: 70px !important;
+  right: auto !important;
+  width: calc(50% - 140px) !important;
+  max-width: calc(50% - 140px) !important;
+}
+
+/* Devoxx logo on transition slides - explicitly position it */
+section.transition footer img:last-of-type {
+  position: absolute !important;
+  right: -180% !important;
+  left: auto !important;
+}
+
+/* Page number on transition slides - centered in left half */
+section.transition::after {
+  width: 50% !important;
+  left: 0 !important;
+  right: 50% !important;
+}

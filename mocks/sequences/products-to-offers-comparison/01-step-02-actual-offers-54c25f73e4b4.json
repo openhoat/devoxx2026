@@ -1,0 +1,70 @@
+{
+  "response": {
+    "status": 200,
+    "statusText": "OK",
+    "headers": {
+      "content-type": "application/json",
+      "x-request-id": "req-new-001"
+    },
+    "data": {
+      "offers": [
+        {
+          "id": "P001",
+          "offerId": "OFF-P001-2026",
+          "sku": "LAPTOP-PRO-15",
+          "name": "Laptop Pro 15\"",
+          "description": "Professional laptop with 15.6 inch display",
+          "category": "electronics",
+          "price": 1299.99,
+          "currency": "EUR",
+          "stock": 15,
+          "attributes": {
+            "brand": "TechBrand",
+            "weight": "2.1kg",
+            "screen_size": "15.6 inch"
+          }
+        },
+        {
+          "id": "P002",
+          "offerId": "OFF-P002-2026",
+          "sku": "MOUSE-WL-01",
+          "name": "Wireless Mouse",
+          "description": "Ergonomic wireless mouse with long battery life",
+          "category": "accessories",
+          "price": 29.99,
+          "currency": "EUR",
+          "stock": 150,
+          "attributes": {
+            "brand": "TechBrand",
+            "connection": "Bluetooth 5.0",
+            "battery_life": "12 months"
+          }
+        },
+        {
+          "id": "P003",
+          "offerId": "OFF-P003-2026",
+          "sku": "KEYBOARD-MECH-01",
+          "name": "Mechanical Keyboard",
+          "description": "RGB mechanical keyboard with Cherry MX switches",
+          "category": "accessories",
+          "price": 89.99,
+          "currency": "EUR",
+          "stock": 75,
+          "attributes": {
+            "brand": "TechBrand",
+            "switches": "Cherry MX Blue",
+            "backlight": "RGB"
+          }
+        }
+      ],
+      "metadata": {
+        "totalResults": 3,
+        "pageNumber": 1,
+        "pageSize": 10,
+        "query": "product_search"
+      }
+    }
+  },
+  "capturedAt": "2026-04-07T10:00:01.000Z",
+  "mockId": "def456ghi789"
+}

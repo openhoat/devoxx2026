@@ -1,0 +1,153 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "HttpSequence",
+  "description": "A comprehensive schema for defining a sequence of HTTP requests. It's designed for API testing and automation, allowing for complex workflows with multiple steps, various authentication methods, and post-request processing.",
+  "type": "object",
+  "required": ["name", "steps"],
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "The name of the sequence. Used for identification and logging."
+    },
+    "baseUrl": {
+      "type": "string",
+      "format": "uri",
+      "description": "An optional base URL to be prepended to all request endpoints in the sequence. If a step's endpoint is a full URL, this base URL is ignored for that step."
+    },
+    "steps": {
+      "type": "array",
+      "description": "The ordered list of steps to be executed in the sequence.",
+      "items": {
+        "$ref": "#/definitions/HttpSequenceStep"
+      }
+    }
+  },
+  "definitions": {
+    "HttpSequenceStep": {
+      "type": "object",
+      "required": ["name"],
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "The unique name of this step. Used as a key to store conversation results."
+        },
+        "request": {
+          "type": "object",
+          "required": ["method", "endpoint"],
+          "description": "Defines the HTTP request to be executed in this step.",
+          "properties": {
+            "method": {
+              "type": "string",
+              "enum": [
+                "GET",
+                "POST",
+                "PUT",
+                "DELETE",
+                "PATCH",
+                "HEAD",
+                "OPTIONS"
+              ],
+              "description": "The HTTP method for the request."
+            },
+            "endpoint": {
+              "type": "string",
+              "description": "The request's endpoint. It can be a relative path that will be appended to the `baseUrl` or a full URL, which will override the `baseUrl`."
+            },
+            "basicAuth": {
+              "type": "object",
+              "description": "Optional basic authentication credentials.",
+              "properties": {
+                "username": {
+                  "type": "string"
+                },
+                "password": {
+                  "type": "string"
+                }
+              },
+              "required": ["username", "password"]
+            },
+            "bearerToken": {
+              "type": "string",
+              "description": "Optional Bearer Token for authentication. This will add an 'Authorization: Bearer <token>' header."
+            },
+            "headers": {
+              "type": "object",
+              "description": "A map of HTTP headers to be sent with the request.",
+              "additionalProperties": {
+                "type": "string"
+              }
+            },
+            "queryParams": {
+              "type": "object",
+              "description": "A map of query parameters to be appended to the URL.",
+              "additionalProperties": {
+                "type": "string"
+              }
+            },
+            "payload": {
+              "description": "The request body, typically for methods like POST, PUT, or PATCH. Can be any valid JSON object, array, or primitive. For non-JSON payloads, consider encoding it as a string."
+            },
+            "timeout": {
+              "type": "integer",
+              "description": "The timeout for the request in milliseconds. Defaults to 5000ms.",
+              "minimum": 0
+            },
+            "proxy": {
+              "type": "object",
+              "description": "Optional proxy configuration for the request.",
+              "properties": {
+                "host": {
+                  "type": "string"
+                },
+                "port": {
+                  "type": "integer"
+                },
+                "auth": {
+                  "type": "object",
+                  "properties": {
+                    "username": {
+                      "type": "string"
+                    },
+                    "password": {
+                      "type": "string"
+                    }
+                  },
+                  "required": ["username", "password"]
+                }
+              },
+              "required": ["host", "port"]
+            }
+          }
+        },
+        "plugins": {
+          "type": "array",
+          "description": "An optional list of plugins to execute after the request is completed. Useful for extracting data from the response or performing custom validation.",
+          "items": {
+            "$ref": "#/definitions/HttpSequencePlugin"
+          }
+        }
+      }
+    },
+    "HttpSequencePlugin": {
+      "type": "object",
+      "required": ["name", "type"],
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "A descriptive name for the plugin instance."
+        },
+        "type": {
+          "type": "string",
+          "description": "The type of the plugin to be executed. This should correspond to a registered plugin."
+        },
+        "args": {
+          "type": "array",
+          "description": "A list of arguments to be passed to the plugin.",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,7 @@
+# Marp configuration
+options:
+  markdown:
+    breaks: false
+  allowLocalFiles: true
+themes:
+  - slides/themes/arolla-devoxx.css

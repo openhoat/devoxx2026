@@ -1,0 +1,12 @@
+/.clinerules/
+/.idea/
+/.wireit/
+/dist/
+/lib/
+/node_modules/
+
+**/.envrc
+**/.npm/
+
+*.local.json
+*.local

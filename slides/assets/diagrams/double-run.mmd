@@ -1,0 +1,38 @@
+%%{init: {'theme': 'base', 'themeVariables': { 'primaryColor': '#003366', 'primaryTextColor': '#fff', 'primaryBorderColor': '#003366', 'lineColor': '#003366', 'secondaryColor': '#0066cc', 'tertiaryColor': '#fff'}}}%%
+flowchart TB
+    subgraph Request["🔄 Request"]
+        R1[HTTP Request]
+    end
+    
+    subgraph Legacy["📦 Legacy API"]
+        L1[GET /api/v1/products]
+        L2[Response A<br/>Format Legacy]
+    end
+    
+    subgraph Actual["🆕 Actual API"]
+        N1[POST /api/v2/offers/search]
+        N2[Response B<br/>Format Actual]
+    end
+    
+    subgraph Compare["🔍 Comparison"]
+        C1[Parser Legacy]
+        C2[Parser Actual]
+        C3[Compare]
+        C4[Rapport]
+    end
+    
+    R1 --> L1
+    L1 --> L2
+    R1 --> N1
+    N1 --> N2
+    
+    L2 --> C1
+    N2 --> C2
+    C1 --> C3
+    C2 --> C3
+    C3 --> C4
+    
+    style Request fill:#e1f5fe
+    style Legacy fill:#fff3e0
+    style Actual fill:#e8f5e9
+    style Compare fill:#fce4ec

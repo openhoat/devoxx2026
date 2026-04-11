@@ -1,0 +1,14 @@
+%%{init: {'theme': 'base', 'themeVariables': { 'primaryColor': '#FFD200', 'primaryTextColor': '#1A1A1A', 'primaryBorderColor': '#FFD200', 'lineColor': '#1A1A1A', 'secondaryColor': '#FFF9E6', 'tertiaryColor': '#fff'}}}%%
+flowchart LR
+    A["1. Analyse legacy"] --> B["2. Analyse actual"]
+    B --> C["3. Génération"]
+    C --> D["4. Génération"]
+    D --> E["5. Génération"]
+    E --> F["6. Validation"]
+    
+    A -.-> A1["📄 Spec extraction legacy"]
+    B -.-> B1["📄 Spec extraction actual"]
+    C -.-> C1["🔧 Plugin legacy"]
+    D -.-> D1["🔧 Plugin actual"]
+    E -.-> E1["🔧 Plugin comparison"]
+    F -.-> F1["📊 Rapport qualité"]

@@ -1,0 +1,41 @@
+%%{init: {'theme': 'base', 'themeVariables': { 'primaryColor': '#003366', 'primaryTextColor': '#fff', 'primaryBorderColor': '#003366', 'lineColor': '#003366', 'secondaryColor': '#0066cc', 'tertiaryColor': '#fff'}}}%%
+flowchart TB
+    subgraph Prompt["📝 Prompt"]
+        P1["Compare les APIs (legacy et actual),<br/>identifie les mappings de champs<br/>et génère un rapport"]
+    end
+    
+    subgraph LLM["🤖 LLM (Claude)"]
+        L1[Analyse JSON]
+        L2[Mapping champs]
+        L3[Génération rapport]
+    end
+    
+    subgraph Tools["🔧 Outils MCP"]
+        T1[HTTP Client Legacy]
+        T2[HTTP Client Actual]
+        T3[JSONPath Query]
+    end
+    
+    subgraph Output["📊 Output"]
+        O1[Rapport comparaison]
+        O2[Liste écarts]
+    end
+    
+    P1 --> L1
+    L1 --> T1
+    L1 --> T2
+    T1 --> L2
+    T2 --> L2
+    L2 --> T3
+    T3 --> L3
+    L3 --> O1
+    L3 --> O2
+    
+    style Prompt fill:#e3f2fd
+    style LLM fill:#fff8e1
+    style Tools fill:#f3e5f5
+    style Output fill:#e8f5e9
+    
+    %% Annotations
+    P1 -.- A1["⏱️ 5-12 min"]
+    P1 -.- A2["💰 $4-12/test"]

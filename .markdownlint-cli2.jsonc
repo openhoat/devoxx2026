@@ -1,0 +1,23 @@
+{
+  "$schema": "https://raw.githubusercontent.com/DavidAnson/markdownlint-cli2/main/schema/markdownlint-cli2-config-schema.json",
+  "globs": ["doc/**/*.md", "prompts/**/*.md", "README.md"],
+  "config": {
+    "MD007": {
+      "indent": 2
+    },
+    "MD013": false,
+    "MD022": {
+      "lines_above": 1,
+      "lines_below": 1
+    },
+    "MD024": false,
+    "MD032": true,
+    "MD033": {
+      "allowedElements": ["br", "sub", "sup"]
+    },
+    "MD034": false,
+    "MD036": false,
+    "MD040": false,
+    "MD060": false
+  }
+}

@@ -1,0 +1,49 @@
+# Products to Offers Comparison Sequence
+# Compares legacy product API with new offers API
+# This is a simplified E2E test for Devoxx 2026 demo
+
+$schema: "./sequence.schema.json"
+name: "Products to Offers Comparison"
+description: "Compare legacy product API with new offers API for migration validation"
+
+steps:
+  # Step 1: Get legacy products
+  - name: legacy-products
+    description: "Fetch products from legacy API"
+    request:
+      method: GET
+      endpoint: "{{legacyBaseUrl}}/api/v1/products"
+      headers:
+        Accept: "application/json"
+        X-Client-Id: "demo-client"
+    plugins:
+      - name: Extract legacy products
+        type: legacyExtractPlugin
+
+  # Step 2: Get new offers
+  - name: actual-offers
+    description: "Fetch offers from new API"
+    request:
+      method: POST
+      endpoint: "{{actualBaseUrl}}/api/v2/offers/search"
+      headers:
+        Accept: "application/json"
+        Content-Type: "application/json"
+        X-Client-Id: "demo-client"
+      payload:
+        query:
+          type: "product_search"
+          filters:
+            category: "all"
+          pagination:
+            limit: 10
+    plugins:
+      - name: Extract actual offers
+        type: actualExtractPlugin
+
+  # Step 3: Compare data
+  - name: comparison
+    description: "Compare legacy products with new offers"
+    plugins:
+      - name: Compare products vs offers
+        type: productOfferComparisonPlugin

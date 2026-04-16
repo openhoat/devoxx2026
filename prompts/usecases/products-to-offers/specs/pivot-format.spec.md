@@ -14,7 +14,10 @@ type ProductPivot = {
   // Informations produit
   sku: string
   name: string
-  category: string
+
+  // Catégorie (normalisée)
+  category: string // ID de la catégorie
+  categoryName?: string // Nom de la catégorie (optionnel)
 
   // Prix
   price: number
@@ -22,6 +25,13 @@ type ProductPivot = {
 
   // Stock
   stock: number
+
+  // Évaluation
+  rating?: number // Note moyenne ( Legacy: rating, Actual: customerReviews.averageRating)
+  reviewCount?: number // Nombre d'avis (Actual uniquement)
+
+  // Identifiant offre (Actual uniquement)
+  offerId?: string
 
   // Attributs
   attributes: Record<string, unknown>
@@ -32,29 +42,50 @@ type ProductPivot = {
 
 ### Identifiant
 
-- Legacy : `product.id` → `id`
-- New : `offer.productId` → `id`
+- Legacy : `product.productId` → `id`
+- Actual : `offer.productId` → `id`
 
 ### Nom
 
-- Legacy : `product.name` → `name`
-- New : `offer.title` → `name`
+- Legacy : `product.title` → `name`
+- Actual : `offer.title` → `name`
+
+### Catégorie
+
+- Legacy : `product.category` (string) → `category`
+- Actual : `offer.category.id` → `category`, `offer.category.name` → `categoryName`
 
 ### Prix
 
 - Legacy : `product.price` → `price`
-- New : `offer.pricing.total` → `price`
+- Actual : `offer.pricing.total` → `price`
 - Tolérance : différence < 0.01 acceptable (erreurs flottantes)
+
+### Devise
+
+- Legacy : `product.currency` → `currency`
+- Actual : `offer.pricing.currency` → `currency`
 
 ### Stock
 
 - Legacy : `product.stock` → `stock`
-- New : `offer.availability.quantity` → `stock`
+- Actual : `offer.availability.quantity` → `stock`
+
+### Évaluation (nouveaux champs API v2)
+
+- Legacy : `product.rating` → `rating`
+- Actual : `offer.customerReviews.averageRating` → `rating`
+- Actual : `offer.customerReviews.reviewCount` → `reviewCount`
+
+### Identifiant offre (nouveau champ API v2)
+
+- Legacy : non applicable
+- Actual : `offer.offerId` → `offerId`
 
 ### Attributs
 
 - Legacy : Objet `product.attributes` conservé tel quel
-- New : Tableau `offer.attributes` converti en objet `{key: value}`
+- Actual : Tableau `offer.attributes` converti en objet `{key: value}`
 
 ## Fonction de validation
 
@@ -90,7 +121,9 @@ Product Pivot:
   ID: P001
   SKU: LAPTOP-PRO-15
   Name: Laptop Pro 15"
-  Category: electronics
+  Category: tech (Electronics)
   Price: 1299.99 EUR
-  Stock: 15
-  Attributes: { brand: TechBrand, weight: 2.1kg, screen_size: 15.6 inch }
+  Stock: 42
+  Rating: 4.0 (156 reviews)
+  Offer ID: OFF-001
+  Attributes: { brand: TechBrand, weight: 2.5kg }

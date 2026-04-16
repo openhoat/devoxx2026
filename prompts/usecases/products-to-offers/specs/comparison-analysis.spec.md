@@ -24,14 +24,25 @@ Comparer les données pivot extraites des APIs Legacy et Actual pour détecter l
 
 ## Champs comparés
 
-| Champ | Règle | Tolérance |
-|-------|-------|-----------|
-| `id` | Égalité stricte | Aucune |
-| `name` | Égalité stricte | Aucune |
-| `price` | Égalité numérique | ±0.01 (flottant) |
-| `stock` | Égalité stricte | Aucune |
-| `category` | Égalité stricte | Aucune |
-| `attributes` | Comparaison optionnelle | - |
+| Champ | Règle | Tolérance | Priorité |
+|-------|-------|-----------|----------|
+| `id` | Égalité stricte | Aucune | CRITIQUE |
+| `name` | Égalité stricte | Aucune | CRITIQUE |
+| `price` | Égalité numérique | ±0.01 (flottant) | CRITIQUE |
+| `stock` | Égalité stricte | Aucune | CRITIQUE |
+| `category` | Égalité stricte | Aucune | HAUTE |
+| `categoryName` | Égalité stricte | Aucune | OPTIONNELLE |
+| `rating` | Égalité numérique | ±0.1 | OPTIONNELLE |
+| `reviewCount` | Égalité stricte | Aucune | OPTIONNELLE |
+| `sku` | Égalité stricte | Aucune | HAUTE |
+| `currency` | Égalité stricte | Aucune | HAUTE |
+| `attributes` | Comparaison optionnelle | - | OPTIONNELLE |
+
+### Priorités des champs
+
+- **CRITIQUE** : Échec si non match → `matched = false`
+- **HAUTE** : Warning si non match, mais n'échoue pas forcément
+- **OPTIONNELLE** : Information seulement, n'affecte pas le résultat
 
 ## Résultat de comparaison
 
@@ -54,12 +65,15 @@ type MatchedItem = {
   nameMatch: boolean
   priceMatch: boolean
   stockMatch: boolean
+  categoryMatch: boolean
+  ratingMatch?: boolean
 }
 
 type Mismatch = {
   field: string
   legacyValue: unknown
   actualValue: unknown
+  priority: 'CRITIQUE' | 'HAUTE' | 'OPTIONNELLE'
 }
 ```
 
@@ -67,8 +81,8 @@ type Mismatch = {
 
 - `matched = true` si :
   - Aucun élément manquant (`missingInActual` vide)
-  - Aucun mismatch sur les champs critiques
-  - `price`, `name`, `stock` correspondent
+  - Aucun mismatch sur les champs CRITIQUES
+  - `price`, `name`, `stock`, `id` correspondent
 
 ## Code de comparaison
 
@@ -108,15 +122,21 @@ const compareProducts = (
       nameMatch: product.name === offer.name,
       priceMatch: Math.abs(product.price - offer.price) < 0.01,
       stockMatch: product.stock === offer.stock,
+      categoryMatch: product.category === offer.category,
+      ratingMatch: product.rating !== undefined && offer.rating !== undefined
+        ? Math.abs(product.rating - offer.rating) < 0.1
+        : true,
     }
 
     result.matchedItems.push(matchItem)
 
+    // CRITIQUE fields
     if (!matchItem.nameMatch) {
       result.mismatches.push({
         field: `products[${id}].name`,
         legacyValue: product.name,
         actualValue: offer.name,
+        priority: 'CRITIQUE',
       })
     }
 
@@ -125,6 +145,7 @@ const compareProducts = (
         field: `products[${id}].price`,
         legacyValue: product.price,
         actualValue: offer.price,
+        priority: 'CRITIQUE',
       })
     }
 
@@ -133,10 +154,25 @@ const compareProducts = (
         field: `products[${id}].stock`,
         legacyValue: product.stock,
         actualValue: offer.stock,
+        priority: 'CRITIQUE',
       })
     }
 
-    if (!matchItem.nameMatch || !matchItem.priceMatch || !matchItem.stockMatch) {
+    // HAUTE priority fields
+    if (!matchItem.categoryMatch) {
+      result.mismatches.push({
+        field: `products[${id}].category`,
+        legacyValue: product.category,
+        actualValue: offer.category,
+        priority: 'HAUTE',
+      })
+    }
+
+    // Check CRITIQUE mismatches for matched flag
+    const hasCritiqueMismatch = result.mismatches.some(
+      m => m.priority === 'CRITIQUE' && m.field.includes(`[${id}]`)
+    )
+    if (hasCritiqueMismatch) {
       result.matched = false
     }
   }
@@ -174,4 +210,11 @@ const compareProducts = (
 ❌ Comparison failed:
    - Missing in actual: 0
    - Mismatches: 1
-     - products[P001].price: 1299.99 vs 1349.99
+     - products[P001].price (CRITIQUE): 1299.99 vs 1349.99
+```
+
+### Échec - Catégorie différente
+
+```
+⚠️ Comparison warnings:
+   - products[P001].category (HAUTE): electronics vs tech

@@ -3,61 +3,60 @@
     "status": 200,
     "statusText": "OK",
     "headers": {
-      "content-type": "application/json",
-      "x-request-id": "req-legacy-001"
+      "content-type": "application/json"
     },
     "data": {
-      "products": [
+      "items": [
         {
-          "id": "P001",
+          "productId": "P001",
           "sku": "LAPTOP-PRO-15",
-          "name": "Laptop Pro 15\"",
+          "title": "Laptop Pro 15\"",
           "category": "electronics",
           "price": 1299.99,
           "currency": "EUR",
-          "stock": 15,
+          "stock": 42,
+          "rating": 4,
           "attributes": {
             "brand": "TechBrand",
-            "weight": "2.1kg",
-            "screen_size": "15.6 inch"
+            "weight": "2.5kg"
           }
         },
         {
-          "id": "P002",
-          "sku": "MOUSE-WL-01",
-          "name": "Wireless Mouse",
-          "category": "accessories",
+          "productId": "P002",
+          "sku": "MOUSE-WRLS-01",
+          "title": "Wireless Mouse",
+          "category": "electronics",
           "price": 29.99,
           "currency": "EUR",
           "stock": 150,
+          "rating": 5,
           "attributes": {
             "brand": "TechBrand",
-            "connection": "Bluetooth 5.0",
-            "battery_life": "12 months"
+            "color": "black"
           }
         },
         {
-          "id": "P003",
+          "productId": "P003",
           "sku": "KEYBOARD-MECH-01",
-          "name": "Mechanical Keyboard",
-          "category": "accessories",
+          "title": "Mechanical Keyboard",
+          "category": "electronics",
           "price": 89.99,
           "currency": "EUR",
           "stock": 75,
+          "rating": 3,
           "attributes": {
             "brand": "TechBrand",
-            "switches": "Cherry MX Blue",
-            "backlight": "RGB"
+            "layout": "AZERTY"
           }
         }
       ],
-      "pagination": {
-        "total": 3,
-        "page": 1,
-        "perPage": 10
+      "metadata": {
+        "version": "v2",
+        "totalItems": 3,
+        "timestamp": "2024-01-15T10:30:00Z"
       }
     }
   },
-  "capturedAt": "2026-04-07T10:00:00.000Z",
-  "mockId": "abc123def456"
+  "capturedAt": "2024-01-15T10:30:00.000Z",
+  "mockId": "legacy-products-v2-001"
 }

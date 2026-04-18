@@ -11,6 +11,7 @@ type LegacyProduct = {
   price: number
   currency: string
   stock: number
+  rating?: number
   attributes: JsonObject
 }
 
@@ -33,41 +34,38 @@ type LegacyProduct = {
 export const legacyExtractPlugin: Plugin = ({ store, logger }): void => {
   logger.info('📦 Extracting legacy products...')
 
-  const legacyData = JSONPath({
-    path: "$.conversation['legacy-products'].response.data",
+  const items = JSONPath({
+    path: "$.conversation['legacy-products'].response.data.items",
     json: store,
     wrap: false,
   })
 
-  if (!isJsonRecord(legacyData)) {
-    throw new Error('Invalid legacy response data structure')
-  }
-
-  // Get products array
-  const products = legacyData.products
-
-  if (!Array.isArray(products)) {
-    throw new Error('No products array found in legacy response')
+  if (!Array.isArray(items)) {
+    throw new Error('No items found in legacy response')
   }
 
   // Normalize to PIVOT FORMAT
   const normalizedProducts: LegacyProduct[] = []
 
-  for (const item of products) {
+  for (const item of items) {
     if (!isJsonRecord(item)) continue
 
-    // Validate required fields
-    if (typeof item.id === 'undefined' || typeof item.name === 'undefined')
+    // Validate required fields: productId and title per spec
+    if (
+      typeof item.productId === 'undefined' ||
+      typeof item.title === 'undefined'
+    )
       continue
 
     normalizedProducts.push({
-      id: String(item.id),
+      id: String(item.productId),
       sku: String(item.sku ?? ''),
-      name: String(item.name),
+      name: String(item.title),
       category: String(item.category ?? ''),
-      price: Number(item.price ?? 0),
+      price: Number(item.price),
       currency: String(item.currency ?? 'EUR'),
       stock: Number(item.stock ?? 0),
+      rating: item.rating !== undefined ? Number(item.rating) : undefined,
       attributes: isJsonRecord(item.attributes) ? item.attributes : {},
     })
   }
